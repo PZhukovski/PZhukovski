@@ -1,3 +1,14 @@
+<div id="header" align="center">
+  <img src="https://media.giphy.com/media/vLlpbDafjgHystuJ0a/giphy.gif" width="100"/>
+  <div>
+    <img src="https://komarev.com/ghpvc/?username=PZhukovski&style=flat-square&color=green" alt=""/>
+  </div>
+</div>
+<div align="center">
+
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=PZhukovski&layout=compact&hide=css)](https://github.com/PZhukovski/github-readme-stats)
+</div>
+
 ### Hi there 👋
 
 <!--
