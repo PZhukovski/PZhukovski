@@ -43,3 +43,74 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+#### Пример реализации запроса
+```php
+<?php
+
+$secret = '5a44c5dff55f3c15a4cce8d7c4cc27e207c7e189';
+$method = 'POST';
+$contentType = 'application/json';
+$date = date(DateTimeInterface::RFC2822);
+$path = '/v2/origin/custom/f90ba33d-c9d9-44da-b76c-c349b0ecbe41/connect';
+
+$url = "https://amojo.amocrm.ru" . $path;
+
+$body = [
+    'account_id' => 'af9945ff-1490-4cad-807d-945c15d88bec',
+    'title' => 'ScopeTitle', //Название вашего канала, отображаемое пользователю
+    'hook_api_version' => 'v2',
+];
+$requestBody = json_encode($body);
+$checkSum = md5($requestBody);
+
+$str = implode("\\n", [
+    strtoupper($method),
+    $checkSum,
+    $contentType,
+    $date,
+    $path,
+]);
+
+$signature = hash_hmac('sha1', $str, $secret);
+
+$headers = [
+    'Date' => $date,
+    'Content-Type' => $contentType,
+    'Content-MD5' => strtolower($checkSum),
+    'X-Signature' => strtolower($signature),
+];
+
+$curlHeaders = [];
+foreach ($headers as $name => $value) {
+    $curlHeaders[] = $name . ": " . $value;
+}
+
+echo $method . ' ' . $url . PHP_EOL;
+foreach ($curlHeaders as $header) {
+    echo $header . PHP_EOL;
+}
+echo PHP_EOL . $requestBody . PHP_EOL;
+
+$curl = curl_init();
+curl_setopt_array($curl, [
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT => 5,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => $method,
+    CURLOPT_POSTFIELDS => $requestBody,
+    CURLOPT_HTTPHEADER => $curlHeaders,
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+$info = curl_getinfo($curl);
+curl_close($curl);
+if ($err) {
+    $result = "cURL Error #:" . $err;
+} else {
+    echo "Status: " . $info['http_code'] . PHP_EOL;
+    echo $response . PHP_EOL;
+}
+```
