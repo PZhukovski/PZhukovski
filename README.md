@@ -45,6 +45,7 @@ Here are some ideas to get you started:
 -->
 
 #### Пример реализации запроса
+
 ```php
 <?php
 
