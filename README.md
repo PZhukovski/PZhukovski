@@ -65,7 +65,7 @@ $body = [
 $requestBody = json_encode($body);
 $checkSum = md5($requestBody);
 
-$str = implode("\\n", [
+$str = implode("\n", [
     strtoupper($method),
     $checkSum,
     $contentType,
